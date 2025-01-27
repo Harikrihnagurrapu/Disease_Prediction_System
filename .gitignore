@@ -1,0 +1,6 @@
+/Backend/.venv
+/Frontend/node_modules
+.DS_Store       # macOS system files
+Thumbs.db       # Windows system files
+*.log           # Log files
+*.env           # Environment files

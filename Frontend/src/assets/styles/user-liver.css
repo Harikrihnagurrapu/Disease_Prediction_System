@@ -1,0 +1,254 @@
+.prediction-content {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+h1 {
+  color: #333;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.upload-card {
+  background-color: #f5f5f5;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 30px;
+}
+
+h2 {
+  color: #444;
+  margin-bottom: 20px;
+}
+
+.file-input-container {
+  margin-bottom: 20px;
+}
+
+.file-input-label {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  display: inline-block;
+  transition: background-color 0.3s;
+}
+
+.file-input-label:hover {
+  background-color: #45a049;
+}
+
+.file-name {
+  margin-top: 10px;
+  font-style: italic;
+  color: #666;
+}
+
+.analyze-button {
+  background-color: #1976d2; /* Blue color, matching MUI's default blue */
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+
+.analyze-button:hover {
+  background-color: #1565c0; /* Darker blue on hover */
+}
+
+.analyze-button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.loading-indicator {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.loading-indicator p {
+  margin-top: 10px;
+  color: #666;
+}
+
+.result-container {
+  margin-top: 30px;
+}
+
+.result-container h3 {
+  margin-top: 20px;
+  margin-bottom: 10px;
+  color: #333;
+  font-size: 1.2em;
+}
+
+.prediction-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.prediction-table th,
+.prediction-table td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.prediction-table th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+}
+
+.prediction-table td:first-child {
+  width: 40%; /* Adjust the width of the file name column as needed */
+}
+
+.negative-prediction {
+  color: #4caf50;
+  font-weight: bold;
+}
+
+.uncertain-prediction {
+  color: #ff9800;
+  font-weight: bold;
+}
+
+.possible-prediction {
+  color: #ff5722;
+  font-weight: bold;
+}
+
+.positive-prediction {
+  color: #f44336;
+  font-weight: bold;
+}
+
+.prediction-explanation {
+  margin-top: 20px;
+  padding: 15px;
+  background-color: #f5f5f5;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.prediction-explanation ul {
+  padding-left: 0;
+  list-style-type: none;
+}
+
+.explanation-item {
+  margin-bottom: 10px;
+  padding: 8px;
+  border-radius: 4px;
+}
+
+.explanation-item.negative-prediction {
+  background-color: rgba(76, 175, 80, 0.1);
+}
+
+.explanation-item.uncertain-prediction {
+  background-color: rgba(255, 152, 0, 0.1);
+}
+
+.explanation-item.possible-prediction {
+  background-color: rgba(255, 87, 34, 0.1);
+}
+
+.explanation-item.positive-prediction {
+  background-color: rgba(244, 67, 54, 0.1);
+}
+
+.explanation-text {
+  font-weight: normal;
+}
+
+@media (max-width: 600px) {
+  .prediction-content {
+    padding: 10px;
+  }
+
+  .upload-card {
+    padding: 15px;
+  }
+
+  .analyze-button {
+    width: 100%;
+  }
+
+  .prediction-table th,
+  .prediction-table td {
+    padding: 8px;
+    font-size: 14px;
+  }
+}
+
+.input-data-container {
+  margin-top: 20px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.input-data-container h4 {
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.input-data-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.input-data-table th,
+.input-data-table td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.input-data-table th {
+  background-color: #e9ecef;
+  font-weight: bold;
+  color: #495057;
+}
+
+.input-data-table tr:last-child td {
+  border-bottom: none;
+}
+
+.input-data-table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.input-data-table tr:hover {
+  background-color: #e9ecef;
+}
+
+.patient-info {
+  margin-bottom: 20px;
+  padding: 15px;
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 4px;
+}
+
+.patient-info p {
+  margin: 5px 0;
+  font-size: 16px;
+}
+
+.patient-info strong {
+  margin-right: 5px;
+  color: #555;
+}
