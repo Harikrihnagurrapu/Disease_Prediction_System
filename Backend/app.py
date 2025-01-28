@@ -5,6 +5,7 @@ from user_kidney import predict_kidney_func, make_final_prediction
 from doctor_liver import predict_liver_csv
 from doctor_kidney import predict_kidney_csv  # Add this import
 from doctor_heart import predict_heart_csv  # Add this import
+from user_heart import predict_heart_disease  # Add this import
 import pandas as pd
 import io
 import traceback
@@ -164,6 +165,22 @@ def final_kidney_prediction():
     except Exception as e:
         print(f"Error in final kidney prediction: {str(e)}")
         return jsonify({'error': f"An error occurred during final prediction: {str(e)}"}), 500
+
+# New endpoint for manual heart disease prediction
+@app.route('/predict/heart', methods=['POST'])
+def predict_heart():
+    data = request.json
+    if not data:
+        return jsonify({'error': 'No data provided'}), 400
+    
+    try:
+        result = predict_heart_disease(data)
+        return result
+    except Exception as e:
+        print(f"Error in heart disease prediction: {str(e)}")
+        print(traceback.format_exc())
+        return jsonify({'error': str(e), 'traceback': traceback.format_exc()}), 500
+
 
 if __name__ == '__main__':
     app.run(debug=True)

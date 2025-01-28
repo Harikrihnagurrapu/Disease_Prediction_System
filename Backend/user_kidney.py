@@ -56,12 +56,30 @@ def make_final_prediction(features):
     
     features_df = features_df.astype(float)
     
-    # Make prediction
-    prediction = model.predict(features_df)
-    probability = model.predict_proba(features_df)[0][1]  # Probability of positive class
+    # Print the features_df for debugging
+    print("Features DataFrame:")
+    print(features_df)
     
-    return {
-        "predic": int(prediction[0]),
-        "probability": float(probability),
-        "input_data": features_df.iloc[0].to_dict()
-    }
+    try:
+        # Make prediction
+        prediction = model.predict(features_df)
+        probability = model.predict_proba(features_df)[0][1]  # Probability of positive class
+        
+        # Check if probability is NaN
+        if np.isnan(probability):
+            print("Warning: Probability is NaN. Using prediction as probability.")
+            probability = float(prediction[0])
+        
+        return {
+            "predic": int(prediction[0]),
+            "probability": float(probability),
+            "input_data": features_df.iloc[0].to_dict()
+        }
+    except Exception as e:
+        print(f"Error during prediction: {str(e)}")
+        return {
+            "predic": None,
+            "probability": None,
+            "input_data": features_df.iloc[0].to_dict(),
+            "error": str(e)
+        }
