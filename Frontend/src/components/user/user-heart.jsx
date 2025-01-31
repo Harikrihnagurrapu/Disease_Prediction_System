@@ -150,7 +150,7 @@ const UserHeart = () => {
           <input type="number" name="glucose" value={formData.glucose} onChange={handleInputChange} required />
         </div>
 
-        <button type="submit">Predict Heart Disease Risk</button>
+        <button type="submit" className='heart-submit'>Predict Heart Disease Risk</button>
       </form>
 
       {prediction && (

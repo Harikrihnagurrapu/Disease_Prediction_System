@@ -1,4 +1,4 @@
-/* .user-heart-container {
+.user-heart-container {
   max-width: 600px;
   margin: 0 auto;
   padding: 20px;
@@ -43,7 +43,7 @@
   padding-right: 28px;
 }
 
-button[type="submit"] {
+.heart-submit {
   display: block;
   width: 100%;
   padding: 10px;
@@ -56,7 +56,7 @@ button[type="submit"] {
   transition: background-color 0.2s;
 }
 
-button[type="submit"]:hover {
+.heart-submit :hover {
   background-color: #0056b3;
 }
 
@@ -88,4 +88,4 @@ button[type="submit"]:hover {
   .user-heart-container {
     padding: 15px;
   }
-} */
+} 
