@@ -1,0 +1,29 @@
+
+FROM python:3.9-slim
+
+# Install dependencies for Rust-based packages
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    python3-dev \
+    curl \
+    libssl-dev \
+    libffi-dev \
+    rustc \
+    cargo \
+    && rm -rf /var/lib/apt/lists/*
+
+# Set up a virtual environment
+RUN python -m venv /opt/venv
+ENV PATH="/opt/venv/bin:$PATH"
+
+# Install Python dependencies
+COPY requirements.txt .
+RUN pip install --upgrade pip
+RUN pip install -r requirements.txt
+
+# Copy your application code
+COPY . /app
+WORKDIR /app
+
+# Command to run your app (adjust this based on your project structure)
+CMD ["python", "app.py"]
