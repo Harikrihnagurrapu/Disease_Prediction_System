@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
-import { CircularProgress } from '@mui/material';
-import '../../assets/styles/user-liver.css';
+import { CircularProgress } from "@mui/material";
+import "../../assets/styles/user-liver.css";
 
 const LiverDiseasePrediction = () => {
   const [file, setFile] = useState(null);
@@ -24,10 +24,10 @@ const LiverDiseasePrediction = () => {
 
   const formatProbability = (prob) => {
     console.log("Raw probability:", prob);
-    if (typeof prob === 'number' && !isNaN(prob)) {
+    if (typeof prob === "number" && !isNaN(prob)) {
       return `${(prob * 100).toFixed(2)}%`;
     }
-    return 'N/A';
+    return "N/A";
   };
 
   const handleSubmit = async (e) => {
@@ -43,12 +43,15 @@ const LiverDiseasePrediction = () => {
 
     try {
       const formData = new FormData();
-      formData.append('file', file);
+      formData.append("file", file);
 
-      const response = await fetch('http://localhost:5000/user/liver', {
-        method: 'POST',
-        body: formData,
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/user/liver`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -62,7 +65,7 @@ const LiverDiseasePrediction = () => {
         fileName: file.name,
         prediction: data.prediction.predic, // Changed from 'prediction' to 'predic'
         probability: data.prediction.probability,
-        inputData: data.prediction.input_data
+        inputData: data.prediction.input_data,
       });
     } catch (error) {
       console.error("Error analyzing report:", error);
@@ -78,30 +81,41 @@ const LiverDiseasePrediction = () => {
   }
 
   const inputDataLabels = [
-    "Total Bilirubin", "Direct Bilirubin",
-    "Alkaline Phosphotase", "Alamine Aminotransferase",
-    "Aspartate Aminotransferase", "Total Proteins",
-    "Albumin", "Albumin and Globulin Ratio"
+    "Total Bilirubin",
+    "Direct Bilirubin",
+    "Alkaline Phosphotase",
+    "Alamine Aminotransferase",
+    "Aspartate Aminotransferase",
+    "Total Proteins",
+    "Albumin",
+    "Albumin and Globulin Ratio",
   ];
 
   const nominalValues = [
-    "0.1 - 1.2 mg/dL", "0 - 0.3 mg/dL",
-    "20 - 140 U/L", "7 - 56 U/L",
-    "10 - 40 U/L", "6.0 - 8.3 g/dL",
-    "3.5 - 5.5 g/dL", "1.0 - 2.5"
+    "0.1 - 1.2 mg/dL",
+    "0 - 0.3 mg/dL",
+    "20 - 140 U/L",
+    "7 - 56 U/L",
+    "10 - 40 U/L",
+    "6.0 - 8.3 g/dL",
+    "3.5 - 5.5 g/dL",
+    "1.0 - 2.5",
   ];
 
   const isOutOfRange = (value, index) => {
     if (value === null || value === undefined) return false;
-    const [min, max] = nominalValues[index].split(' - ').map(v => parseFloat(v));
+    const [min, max] = nominalValues[index]
+      .split(" - ")
+      .map((v) => parseFloat(v));
     return value < min || value > max;
   };
 
   const formatInputValue = (value, index) => {
-    if (index === 1) { // Gender
+    if (index === 1) {
+      // Gender
       return value === 0 ? "Male" : "Female";
     }
-    return value !== null && value !== undefined ? value : 'N/A';
+    return value !== null && value !== undefined ? value : "N/A";
   };
 
   const formatGender = (value) => {
@@ -158,31 +172,33 @@ const LiverDiseasePrediction = () => {
               accept=".pdf"
               onChange={handleFileChange}
               ref={fileInputRef}
-              style={{ display: 'none' }}
+              style={{ display: "none" }}
             />
           </div>
-          {file && (
-            <p className="file-name">{file.name}</p>
-          )}
+          {file && <p className="file-name">{file.name}</p>}
           <button className="analyze-button" type="submit" disabled={isLoading}>
             {isLoading ? "Analyzing..." : "Analyze Report"}
           </button>
         </form>
       </div>
-      
+
       {isLoading && (
         <div className="loading-indicator">
           <CircularProgress size={40} thickness={4} />
           <p>Analyzing report, please wait...</p>
         </div>
       )}
-      
+
       {result && (
         <div className="result-container">
           <h3>Patient Information</h3>
           <div className="patient-info">
-            <p><strong>Age:</strong> {result.inputData[0]}</p>
-            <p><strong>Gender:</strong> {formatGender(result.inputData[1])}</p>
+            <p>
+              <strong>Age:</strong> {result.inputData[0]}
+            </p>
+            <p>
+              <strong>Gender:</strong> {formatGender(result.inputData[1])}
+            </p>
           </div>
 
           <h3>Prediction Result</h3>
@@ -222,9 +238,17 @@ const LiverDiseasePrediction = () => {
                       <td>{label}</td>
                       <td>
                         {isOutOfRange(result.inputData[index + 2], index) ? (
-                          <strong>{result.inputData[index + 2] !== null && result.inputData[index + 2] !== undefined ? result.inputData[index + 2] : 'N/A'}</strong>
+                          <strong>
+                            {result.inputData[index + 2] !== null &&
+                            result.inputData[index + 2] !== undefined
+                              ? result.inputData[index + 2]
+                              : "N/A"}
+                          </strong>
+                        ) : result.inputData[index + 2] !== null &&
+                          result.inputData[index + 2] !== undefined ? (
+                          result.inputData[index + 2]
                         ) : (
-                          result.inputData[index + 2] !== null && result.inputData[index + 2] !== undefined ? result.inputData[index + 2] : 'N/A'
+                          "N/A"
                         )}
                       </td>
                       <td>{nominalValues[index]}</td>
@@ -234,10 +258,12 @@ const LiverDiseasePrediction = () => {
               </table>
             </div>
           )}
-          <p><strong>Recommendation:</strong> {getRecommendation(result.prediction, result.probability)}</p>
+          <p>
+            <strong>Recommendation:</strong>{" "}
+            {getRecommendation(result.prediction, result.probability)}
+          </p>
         </div>
       )}
-    
     </div>
   );
 };

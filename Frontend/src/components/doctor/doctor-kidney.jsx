@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
-import '../../assets/styles/doctor-liver.css';
-import { CircularProgress } from '@mui/material';
-import Papa from 'papaparse';
+import "../../assets/styles/doctor-liver.css";
+import { CircularProgress } from "@mui/material";
+import Papa from "papaparse";
 
 const KidneyDiseasePrediction = () => {
   const [file, setFile] = useState(null);
@@ -50,19 +50,22 @@ const KidneyDiseasePrediction = () => {
 
     try {
       const formData = new FormData();
-      formData.append('file', file);
+      formData.append("file", file);
 
-      const response = await fetch('http://localhost:5000/doctor/kidney', {
-        method: 'POST',
-        body: formData,
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/doctor/kidney`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
       const result = await response.json();
-      
+
       if (result.predictions) {
         const sortedPredictions = result.predictions.sort((a, b) => {
           if (a.prediction === b.prediction) {
@@ -73,7 +76,7 @@ const KidneyDiseasePrediction = () => {
 
         setResults(sortedPredictions);
       } else {
-        throw new Error('No predictions received from the server');
+        throw new Error("No predictions received from the server");
       }
     } catch (error) {
       console.error("Error analyzing report:", error);
@@ -100,7 +103,7 @@ const KidneyDiseasePrediction = () => {
               accept=".csv"
               onChange={handleFileChange}
               ref={fileInputRef}
-              style={{ display: 'none' }}
+              style={{ display: "none" }}
             />
           </div>
           {file && (
@@ -109,17 +112,23 @@ const KidneyDiseasePrediction = () => {
               <ul>
                 <li>
                   <span>{file.name}</span>
-                  <button type="button" className="remove-file" onClick={handleRemoveFile}>×</button>
+                  <button
+                    type="button"
+                    className="remove-file"
+                    onClick={handleRemoveFile}
+                  >
+                    ×
+                  </button>
                 </li>
               </ul>
             </div>
           )}
-          <button className="analyze-button" type="submit" >
+          <button className="analyze-button" type="submit">
             {isLoading ? "Analyzing..." : "Analyze Report"}
           </button>
         </form>
       </div>
-      
+
       {csvData && (
         <div className="csv-preview">
           <h3>CSV File Preview</h3>
@@ -144,18 +153,20 @@ const KidneyDiseasePrediction = () => {
             </table>
           </div>
           {csvData.length > 5 && (
-            <p className="csv-info">Showing first 5 rows out of {csvData.length} total rows.</p>
+            <p className="csv-info">
+              Showing first 5 rows out of {csvData.length} total rows.
+            </p>
           )}
         </div>
       )}
-      
+
       {isLoading && (
         <div className="loading-indicator">
           <CircularProgress size={40} thickness={4} />
           <p>Analyzing reports, please wait...</p>
         </div>
       )}
-      
+
       {results.length > 0 && (
         <div className="result-container">
           <h3>Prediction Results</h3>
@@ -171,7 +182,13 @@ const KidneyDiseasePrediction = () => {
               {results.map((result, index) => (
                 <tr key={index}>
                   <td>{result.patientId}</td>
-                  <td className={result.prediction.includes("not") ? "negative-prediction" : "positive-prediction"}>
+                  <td
+                    className={
+                      result.prediction.includes("not")
+                        ? "negative-prediction"
+                        : "positive-prediction"
+                    }
+                  >
                     {result.prediction}
                   </td>
                   <td>{(result.probability * 100).toFixed(2)}%</td>

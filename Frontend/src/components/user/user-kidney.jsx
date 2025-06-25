@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
-import { CircularProgress } from '@mui/material';
-import '../../assets/styles/user-liver.css';
+import { CircularProgress } from "@mui/material";
+import "../../assets/styles/user-liver.css";
 
 const KidneyDiseasePrediction = () => {
   const [file, setFile] = useState(null);
@@ -26,10 +26,10 @@ const KidneyDiseasePrediction = () => {
 
   const formatProbability = (prob) => {
     console.log("Raw probability:", prob);
-    if (typeof prob === 'number' && !isNaN(prob)) {
+    if (typeof prob === "number" && !isNaN(prob)) {
       return `${(prob * 100).toFixed(2)}%`;
     }
-    return 'N/A';
+    return "N/A";
   };
 
   const handleSubmit = async (e) => {
@@ -47,12 +47,15 @@ const KidneyDiseasePrediction = () => {
 
     try {
       const formData = new FormData();
-      formData.append('file', file);
+      formData.append("file", file);
 
-      const response = await fetch('http://localhost:5000/user/kidney', {
-        method: 'POST',
-        body: formData,
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/user/kidney`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -63,20 +66,59 @@ const KidneyDiseasePrediction = () => {
       setMissingFeatures(data.missing_features);
     } catch (error) {
       console.error("Error analyzing report:", error);
-      setError("An error occurred while analyzing the report. Please try again.");
+      setError(
+        "An error occurred while analyzing the report. Please try again."
+      );
     } finally {
       setIsLoading(false);
     }
   };
 
   const validateInput = (feature, value) => {
-    const numericFeatures = ['age', 'bp', 'sg', 'al', 'su', 'bgr', 'bu', 'sc', 'sod', 'pot', 'hemo', 'pcv', 'wc', 'rc'];
-    const categoricalFeatures = ['rbc', 'pc', 'pcc', 'ba', 'htn', 'dm', 'cad', 'appet', 'pe', 'ane'];
+    const numericFeatures = [
+      "age",
+      "bp",
+      "sg",
+      "al",
+      "su",
+      "bgr",
+      "bu",
+      "sc",
+      "sod",
+      "pot",
+      "hemo",
+      "pcv",
+      "wc",
+      "rc",
+    ];
+    const categoricalFeatures = [
+      "rbc",
+      "pc",
+      "pcc",
+      "ba",
+      "htn",
+      "dm",
+      "cad",
+      "appet",
+      "pe",
+      "ane",
+    ];
 
     if (numericFeatures.includes(feature)) {
-      return !isNaN(parseFloat(value)) && isFinite(value) && parseFloat(value) >= 0;
+      return (
+        !isNaN(parseFloat(value)) && isFinite(value) && parseFloat(value) >= 0
+      );
     } else if (categoricalFeatures.includes(feature)) {
-      return ['normal', 'abnormal', 'present', 'notpresent', 'yes', 'no', 'good', 'poor'].includes(value.toLowerCase());
+      return [
+        "normal",
+        "abnormal",
+        "present",
+        "notpresent",
+        "yes",
+        "no",
+        "good",
+        "poor",
+      ].includes(value.toLowerCase());
     }
     return true;
   };
@@ -90,7 +132,7 @@ const KidneyDiseasePrediction = () => {
       const finalFeatures = { ...extractedData };
       let hasValidationError = false;
 
-      missingFeatures.forEach(feature => {
+      missingFeatures.forEach((feature) => {
         const value = e.target[feature].value;
         if (!validateInput(feature, value)) {
           setError(`Invalid input for ${feature}`);
@@ -106,17 +148,20 @@ const KidneyDiseasePrediction = () => {
       }
 
       // Ensure 'appet' is included
-      if (!finalFeatures.hasOwnProperty('appet')) {
-        finalFeatures['appet'] = 'normal';
+      if (!finalFeatures.hasOwnProperty("appet")) {
+        finalFeatures["appet"] = "normal";
       }
 
-      const response = await fetch('http://localhost:5000/user/kidney/final', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ features: finalFeatures }),
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/user/kidney/final`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ features: finalFeatures }),
+        }
+      );
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -127,7 +172,9 @@ const KidneyDiseasePrediction = () => {
       setProbability(data.probability);
     } catch (error) {
       console.error("Error making final prediction:", error);
-      setError("An error occurred while making the final prediction. Please try again.");
+      setError(
+        "An error occurred while making the final prediction. Please try again."
+      );
     } finally {
       setIsLoading(false);
     }
@@ -138,35 +185,73 @@ const KidneyDiseasePrediction = () => {
   }
 
   const inputDataLabels = [
-    "Age", "Blood Pressure", "Specific Gravity", "Albumin", "Sugar",
-    "Red Blood Cells", "Pus Cell", "Pus Cell Clumps", "Bacteria",
-    "Blood Glucose Random", "Blood Urea", "Serum Creatinine", "Sodium",
-    "Potassium", "Hemoglobin", "Packed Cell Volume", "White Blood Cell Count",
-    "Red Blood Cell Count", "Hypertension", "Diabetes Mellitus",
-    "Coronary Artery Disease", "Appetite", "Pedal Edema", "Anemia"
+    "Age",
+    "Blood Pressure",
+    "Specific Gravity",
+    "Albumin",
+    "Sugar",
+    "Red Blood Cells",
+    "Pus Cell",
+    "Pus Cell Clumps",
+    "Bacteria",
+    "Blood Glucose Random",
+    "Blood Urea",
+    "Serum Creatinine",
+    "Sodium",
+    "Potassium",
+    "Hemoglobin",
+    "Packed Cell Volume",
+    "White Blood Cell Count",
+    "Red Blood Cell Count",
+    "Hypertension",
+    "Diabetes Mellitus",
+    "Coronary Artery Disease",
+    "Appetite",
+    "Pedal Edema",
+    "Anemia",
   ];
 
   const nominalValues = [
-    "N/A", "90-120/60-80 mmHg", "1.005-1.025", "< 30 mg/dL", "< 130 mg/dL",
-    "4.5-5.5 million/mm³", "0-5 /HPF", "Absent", "Not present",
-    "70-100 mg/dL", "7-20 mg/dL", "0.6-1.2 mg/dL", "135-145 mEq/L",
-    "3.5-5.0 mEq/L", "13.5-17.5 g/dL", "40-50%", "4,500-11,000 /mm³",
-    "4.5-5.5 million/mm³", "No", "No", "No", "Good", "Absent", "No"
+    "N/A",
+    "90-120/60-80 mmHg",
+    "1.005-1.025",
+    "< 30 mg/dL",
+    "< 130 mg/dL",
+    "4.5-5.5 million/mm³",
+    "0-5 /HPF",
+    "Absent",
+    "Not present",
+    "70-100 mg/dL",
+    "7-20 mg/dL",
+    "0.6-1.2 mg/dL",
+    "135-145 mEq/L",
+    "3.5-5.0 mEq/L",
+    "13.5-17.5 g/dL",
+    "40-50%",
+    "4,500-11,000 /mm³",
+    "4.5-5.5 million/mm³",
+    "No",
+    "No",
+    "No",
+    "Good",
+    "Absent",
+    "No",
   ];
 
   const isOutOfRange = (value, index) => {
     if (value === null || value === undefined) return false;
     if (index === 0) return false; // Age
     if (index >= 18) return false; // Binary features
-    const range = nominalValues[index].split('-').map(v => parseFloat(v));
+    const range = nominalValues[index].split("-").map((v) => parseFloat(v));
     return value < range[0] || value > range[1];
   };
 
   const formatInputValue = (value, index) => {
-    if (index >= 18) { // Binary features
+    if (index >= 18) {
+      // Binary features
       return value === 1 ? "Yes" : "No";
     }
-    return value !== null && value !== undefined ? value : 'N/A';
+    return value !== null && value !== undefined ? value : "N/A";
   };
 
   const formatPredictionText = (prediction, probability) => {
@@ -219,33 +304,42 @@ const KidneyDiseasePrediction = () => {
               accept=".pdf"
               onChange={handleFileChange}
               ref={fileInputRef}
-              style={{ display: 'none' }}
+              style={{ display: "none" }}
             />
           </div>
-          {file && (
-            <p className="file-name">{file.name}</p>
-          )}
+          {file && <p className="file-name">{file.name}</p>}
           <button className="analyze-button" type="submit" disabled={isLoading}>
             {isLoading ? "Analyzing..." : "Analyze Report"}
           </button>
         </form>
       </div>
-      
+
       {isLoading && (
         <div className="loading-indicator">
           <CircularProgress size={40} thickness={4} />
           <p>Analyzing report, please wait...</p>
         </div>
       )}
-      
+
       {extractedData && missingFeatures.length > 0 && (
         <div className="missing-features-form">
           <h3>Please provide the following missing information:</h3>
           <form onSubmit={handleFinalSubmit}>
-            {missingFeatures.map(feature => (
+            {missingFeatures.map((feature) => (
               <div key={feature}>
                 <label htmlFor={feature}>{feature}:</label>
-                {['rbc', 'pc', 'pcc', 'ba', 'htn', 'dm', 'cad', 'appet', 'pe', 'ane'].includes(feature) ? (
+                {[
+                  "rbc",
+                  "pc",
+                  "pcc",
+                  "ba",
+                  "htn",
+                  "dm",
+                  "cad",
+                  "appet",
+                  "pe",
+                  "ane",
+                ].includes(feature) ? (
                   <select id={feature} name={feature} required>
                     <option value="">Select</option>
                     <option value="normal">Normal</option>
@@ -258,7 +352,14 @@ const KidneyDiseasePrediction = () => {
                     <option value="poor">Poor</option>
                   </select>
                 ) : (
-                  <input type="number" id={feature} name={feature} required step="any" min="0" />
+                  <input
+                    type="number"
+                    id={feature}
+                    name={feature}
+                    required
+                    step="any"
+                    min="0"
+                  />
                 )}
               </div>
             ))}
@@ -268,12 +369,20 @@ const KidneyDiseasePrediction = () => {
           </form>
         </div>
       )}
-      
+
       {result !== null && (
         <div>
           <h3>Prediction Result:</h3>
-          <p>The model predicts: {result === 1 ? "Chronic Kidney Disease" : "No Chronic Kidney Disease"}</p>
-          <p>Probability of Chronic Kidney Disease: {(probability * 100).toFixed(2)}%</p>
+          <p>
+            The model predicts:{" "}
+            {result === 1
+              ? "Chronic Kidney Disease"
+              : "No Chronic Kidney Disease"}
+          </p>
+          <p>
+            Probability of Chronic Kidney Disease:{" "}
+            {(probability * 100).toFixed(2)}%
+          </p>
         </div>
       )}
     </div>
