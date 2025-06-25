@@ -183,7 +183,6 @@ def predict_heart():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
-# if __name__ == "__main__":
-#     port = int(os.environ.get("PORT", 10000))  # Render assigns a port
-#     app.run(host="0.0.0.0", port=port)
+    # This block is for running the app locally for development and testing.
+    # When deploying to Render, the 'gunicorn' command from the Procfile is used instead.
+    app.run(debug=True, port=5000)
