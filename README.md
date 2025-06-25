@@ -109,20 +109,3 @@ To run this project on your local machine, please follow the steps below.
 
 ---
 
-## How to Push to GitHub
-
-Now that the README.md file is created, you can push it to your GitHub repository by following these steps:
-
-1.  **Stage the Changes:**
-    ```bash
-    git add README.md
-    ```
-2.  **Commit the Changes:**
-    ```bash
-    git commit -m "docs: Add comprehensive README file"
-    ```
-3.  **Push to GitHub:**
-    `bash
-    git push origin main
-    `
-    This will update your repository with the new README file.
